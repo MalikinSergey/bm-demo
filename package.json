@@ -1,0 +1,30 @@
+{
+    "private": true,
+    "scripts": {
+        "deploy": "git clean -f; git fetch; git reset --hard origin/main; composer i",
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "start": ""
+    },
+    "dependencies": {
+        "convert-svg-to-png": "^0.5.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.2.1",
+        "alpinejs": "^2.7.3",
+        "autoprefixer": "^10.1.0",
+        "axios": "^0.21",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.2.1",
+        "postcss-import": "^12.0.1",
+        "sass": "^1.32.7",
+        "stylus": "^0.54.8",
+        "tailwindcss": "^2.0.2"
+    }
+}

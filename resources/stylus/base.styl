@@ -1,0 +1,12 @@
+.desktop-only {
+    +mobile() {
+        display: none !important;
+    }
+}
+
+.mobile-only {
+    display: none;
+    +mobile() {
+        display: block;
+    }
+}

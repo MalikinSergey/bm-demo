@@ -1,0 +1,191 @@
+.pack-layer {
+
+}
+
+.pack-container {
+  padding-top: 136px;
+  padding-bottom: 136px;
+}
+
+//.pack{
+//  display: flex;
+//  margin-bottom: 148px;
+//}
+
+.pack-illustration {
+  width: 520px;
+}
+
+.pack-info {
+
+}
+
+.pack-name {
+  font-weight: normal;
+  font-size: 64px;
+}
+
+.pack-desc {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.packs {
+  display: flex;
+
+  flex-wrap: wrap
+
+  +mobile() {
+    flex-direction: column
+  }
+}
+
+.pack {
+
+  border-top: 4px solid #efefef
+
+  box-shadow: rgba(50, 50, 93, 0.12) 0px 13px 27px -5px, rgba(0, 0, 0, 0.05) 0px 8px 16px -8px;
+
+  border-radius 16px
+
+  position: relative
+  color: $carbon;
+  width: 356px;
+  min-width: 314px;
+  height: 356px;
+  //border: 1px solid #E4E4E4;
+  border-radius: 32px;
+  padding: 12px;
+
+  margin-right: 32px;
+
+  margin-bottom: 32px
+
+  display: flex
+
+  flex-direction: column
+
+  align-items: flex-start
+
+  &:nth-child(3n + 3) {
+    margin-right: 0
+  }
+
+  tr();
+
+  &:hover {
+    box-shadow: 0px 12px 45px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    tr();
+  }
+}
+
+.pack__assets {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pack__asset {
+  width: 110px;
+  padding: 12px 12px;
+
+  * {
+    width: 100%;
+  }
+}
+
+.pack__name {
+
+  height 56px
+  min-height 56px
+
+  font-weight: 800;
+  font-size: 21px;
+  text-align: left;
+  margin-bottom: 6px;
+  margin-left: 16px;
+
+  margin-top: auto
+}
+
+.pack__info {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+
+  width: 100%
+  margin-bottom: 16px
+}
+
+.pack__count {
+  font-size: 21px;
+}
+
+.pack__price {
+  font-size: 24px;
+}
+
+.pack-price-value {
+  font-weight: 800;
+}
+
+.pack-price-discount {
+
+  position: absolute
+
+  font-weight: normal
+
+  font-size: 14px
+
+  display: inline-block
+
+  padding: 1px 6px;
+
+  border-radius: 0 0 6px 6px;
+
+  color: $white
+
+  background: $mint
+
+  //color: $mint
+
+  right: 31px;
+  top: 0px;
+}
+
+.pack-title {
+  margin-bottom: 32px;
+  font-weight: 600;
+  font-size: 32px;
+}
+
+.packs-title {
+  margin-top: 40px
+  margin-bottom: 32px
+}
+
+.pack-illustration-preview {
+
+  width: 100%
+
+  height: 232px;
+
+  img {
+    height: 100%
+
+    object-fit cover
+  }
+}
+
+.pack__assets--illustration {
+
+  display: flex
+
+  align-items: center
+
+  justify-content: center
+
+  width: 100%
+
+}
+

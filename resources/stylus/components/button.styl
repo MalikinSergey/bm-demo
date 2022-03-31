@@ -1,0 +1,90 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+
+.button {
+  border: none;
+  font-size: 16px;
+  padding: 8px 24px;
+  border-radius: 64px;
+  white-space: nowrap;
+
+  font-family: $font-family
+
+
+  background-repeat: no-repeat;
+
+  display: inline-flex
+
+  justify-content: center
+
+  align-items: center
+
+  tr();
+
+  .button__divider {
+    width: 2px;
+    height: 16px;
+    display: inline-block
+    margin: 0 16px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  &:hover {
+    background-color: $mint;
+    color: $white;
+    transform: translateY(-2px);
+    tr();
+  }
+
+  &--primary {
+    background-color: $mint;
+    color: $white;
+  }
+
+  &--primary-outline {
+    color: $mint;
+    background-color: transparent;
+    border: 1px solid $mint;
+
+    &:hover {
+      transform: none;
+      tr();
+      background-color: $mint;
+      color: $white;
+    }
+  }
+
+  &--xs {
+
+    padding 4px 16px
+
+    font-size: 12px
+
+    &--with-icon {
+
+      padding-left: 32px
+
+    }
+  }
+
+  &--l {
+    font-size: 24px;
+    padding: 16px 32px;
+
+    .button__divider {
+      height: 24px
+    }
+  }
+
+  &--xl {
+    font-size: 32px;
+    padding: 24px 48px;
+
+    .button__divider {
+      height: 24px
+    }
+  }
+
+}
+

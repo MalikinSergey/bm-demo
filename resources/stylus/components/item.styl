@@ -1,0 +1,222 @@
+.item-cover__main {
+  //margin-bottom: 32px
+
+  &--icon {
+
+    img, svg {
+
+      width: 320px;
+
+    }
+
+  }
+
+  &--illustration {
+
+    img, svg {
+
+      width: 512px;
+
+    }
+  }
+}
+
+.item-cover__other {
+  display: flex
+
+  justify-content: center
+  align-items: flex-end
+}
+
+.item-layer {
+
+}
+
+.item-container {
+
+}
+
+.item {
+  display: flex;
+  justify-content: space-between
+  flex-direction: row
+
+  align-items: stretch
+
+  margin-bottom: 64px
+}
+
+.item-cover {
+
+  flex-direction: column
+
+  padding: 32px;
+
+  border-top: 4px solid #efefef
+
+  box-shadow: rgba(50, 50, 93, 0.12) 0px 13px 27px -5px, rgba(0, 0, 0, 0.05) 0px 8px 16px -8px;
+
+  border-radius 16px
+  width: 520px;
+
+  margin-right: 64px
+
+  display: flex
+
+  justify-content: center
+
+  align-items: center
+}
+
+.item-cover__main--illustration {
+  width: 100%
+
+  img {
+    width: 100%
+  }
+}
+
+.item-info {
+  flex: 1
+
+  display: flex
+
+  flex-direction: column
+
+}
+
+.item-name {
+  font-weight: normal;
+  font-size: 48px;
+  margin-bottom: 8px
+}
+
+.item-download {
+
+  padding: 24px 0;
+
+}
+
+.item-download__title {
+  margin-bottom: 16px
+}
+
+.item__payment {
+  flex-direction: column
+
+  margin-top: 32px;
+
+  .payment__price {
+    margin-bottom: 32px
+  }
+
+  .payment__options {
+    justify-content: center
+  }
+}
+
+.item-tags {
+  display: flex
+  margin-bottom: 8px;
+  flex-wrap: wrap
+}
+
+.tags-title {
+  margin-right: 16px
+}
+
+.item-from {
+
+  font-size: 24px;
+
+  margin-bottom: 8px
+
+  a {
+    color: $mint
+  }
+}
+
+.item-related-title {
+  font-size: 32px
+  font-weight: 600
+  margin-bottom: 32px
+}
+
+.item-formats--col {
+  flex-direction: column
+}
+
+.item-formats {
+
+  margin-bottom: 24px
+
+  display: flex
+
+  //flex-direction: column
+
+  flex-wrap: wrap
+
+  div {
+    margin-right: 16px
+  }
+
+  span {
+    color: $mint;
+    border: 1px solid $mint;
+    border-radius 32px
+    font-size: 12px;
+
+    padding: 1px 8px 2px;
+
+    margin-right: 8px
+
+    margin-bottom: 8px
+
+    font-family: 'Oxygen Mono', monospace;
+  }
+}
+
+.item-formats__title {
+  margin-bottom: 8px
+}
+
+.item-cover__title {
+
+  margin-top: 80px
+
+  text-align: center
+
+  color: #bbbbbb
+
+  font-size: 24px
+
+  max-width 360px
+
+  span {
+    white-space nowrap
+  }
+}
+
+.item-cover__title--icon {
+  margin-top: 16px
+}
+
+img.item-cover__icon {
+  width: 128px
+  margin-right: 20px
+
+  &:nth-child(3n + 3) {
+
+    margin-right: 0
+  }
+}
+
+.item-pricing {
+  margin-top: auto
+}
+
+.items-success {
+
+  font-weight: bold
+
+}

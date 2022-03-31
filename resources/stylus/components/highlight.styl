@@ -1,0 +1,201 @@
+.highlights {
+  display: flex;
+  flex-direction: column
+  align-items: center
+
+  margin-bottom: 64px
+}
+
+.highlight {
+  bm-box-radius()
+
+  border-top: 4px solid #efefef
+
+  box-shadow: rgba(50, 50, 93, 0.12) 0px 13px 27px -5px, rgba(0, 0, 0, 0.05) 0px 8px 16px -8px;
+
+  border-radius 16px
+
+  width: 100%
+
+  padding: 40px 48px 48px 48px
+
+  margin-bottom: 64px
+}
+
+.highlight__main {
+
+  display: flex
+
+}
+
+.highlight__pricing {
+
+  margin-top: 8px
+
+  padding-top: 32px
+
+  border-top: 1px solid #efefef;
+
+  display: flex;
+
+
+  .pricing__licenses{
+    margin-bottom: 0
+  }
+
+  .pricing-form {
+    //width: 520px
+    width: 100%
+  }
+
+  .pricing__info{
+    width: 520px
+
+
+  }
+
+  .pricing__actions{
+    flex: 1
+
+    justify-content: center
+
+
+  }
+
+  .pricing-main{
+    display: flex
+
+    width: 100%
+    align-items: center
+  }
+}
+
+img.highlight__cover {
+
+  width: 512px !important
+
+}
+
+.highlight__info {
+  display: flex;
+
+  flex-direction: column
+
+  align-items: flex-start
+
+}
+
+.highlight__link {
+  display: flex;
+
+  flex-direction: column
+
+  align-items: flex-start
+
+  color: $carbon
+
+  * {
+    tr()
+  }
+
+  &:hover {
+
+    * {
+      tr()
+      color: $mint;
+    }
+  }
+}
+
+.highlight__title {
+  font-weight: 800;
+  font-size: 42px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.highlight__subtitle {
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.highlight__meta {
+
+  font-size: 32px;
+
+  b {
+    font-weight: 800
+  }
+
+  margin-bottom: 12px
+
+}
+
+.items-formats-files {
+  display: flex
+}
+
+.highlight__price {
+  font-weight: 800
+  font-size: 32px;
+  line-height: 1.2;
+  //margin-bottom: 32px
+  //color: $mint
+}
+
+.highlight__assets {
+
+  margin-left: auto
+
+  width: 680px
+
+  display: flex
+
+  flex-wrap: wrap
+
+  align-items: flex-start
+
+
+
+  img {
+    margin: 20px;
+
+    margin-top: 0
+
+    width: 128px;
+  }
+
+}
+
+.highlight__illustration {
+
+  margin-left: auto
+
+  width: 680px
+  min-width: 680px
+
+  display: flex
+
+  flex-wrap: wrap
+
+  justify-content: flex-start
+
+  img {
+
+    width: 100%;
+
+    object-fit contain
+  }
+}
+
+.highlight__buy {
+  display: flex
+  align-items: flex-start
+  justify-content: flex-start
+}
+
+.highlights__more {
+  @extend .button, .button--primary-outline, .button--xl
+
+}
