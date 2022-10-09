@@ -8,7 +8,6 @@
 
             @if($item->hasLicense(auth()->user(), 'commercial'))
 
-
                 <label class="pricing__license">
 
                     <div class="pricing__control">
@@ -37,7 +36,7 @@
 
                     <div class="pricing__control">
 
-                        <input type="radio" name="license_type" value="commercial">
+                        <input type="radio" name="license_type" value="commercial" checked>
 
                     </div>
 
@@ -167,27 +166,6 @@
 
         <button type="submit" class="button button--primary button--l">Buy Now</button>
 
-        {{--        <div class="pricing__or">--}}
-        {{--            or--}}
-        {{--        </div>--}}
-
-        {{--        <button class="button button--primary-outline">Subscribe</button>--}}
-
     </div>
 
-    @push('scripts')
-
-        <script type="text/javascript">
-          $(function () {
-
-            $('[name=license_type]').first().prop('checked', true)
-
-            // $('.pricing__more').click(function(){
-            //   $('.pricing__license--hidden').show()
-            //   $(this).hide()
-            // })
-
-          })
-        </script>
-    @endpush
 </div>

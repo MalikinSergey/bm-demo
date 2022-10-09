@@ -56,25 +56,15 @@ class AssetController extends Controller
 
         $asset = $family->assets()->whereSlug($assetSlug)->firstOrFail();
 
-        if (!auth()->check()) {
-            return redirect()->route('website.user.register_form', ['from_url' => $family->url(), 'from_title' => $family->name]);
-        }
+//        if (!auth()->check()) {
+//            return redirect()->route('website.user.register_form', ['from_url' => $family->url(), 'from_title' => $family->name]);
+//        }
 
         $license = $request->input('license_type');
 
         $paymentLink = $asset->paymentLink($license, user()->id);
 
-//        dd($paymentLink);
-
         return redirect($paymentLink);
-
-
-
-//        auth()->user()->assets()->save($asset, ['license' => $license]);
-
-//        \Mail::to([auth()->user()])->send(new DownloadLinkMessage($asset));
-
-//        return back()->withMessage(trans('purchases.messages.success'));
     }
 
     public function download($familySlug, $assetSlug)
@@ -83,7 +73,11 @@ class AssetController extends Controller
 
         $asset = $family->assets()->whereSlug($assetSlug)->firstOrFail();
 
-        if (!auth()->check() || !$asset->hasLicense(auth()->user())) {
+        if (!auth()->check()) {
+            abort(403);
+        }
+
+        if ( !$asset->hasLicense(auth()->user()) && $asset->purpose !== 'freebie') {
             abort(403);
         }
 

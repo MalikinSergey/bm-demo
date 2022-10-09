@@ -39,6 +39,20 @@ class CreateAssetsPngs extends Command
     public function handle()
     {
 
+
+        while(true){
+            $this->createPngs();
+
+            $this->comment('sleep 10 min');
+
+            sleep(60 * 10);
+        }
+
+        return 0;
+    }
+
+    protected function createPngs(){
+
         $this->info(date('Y-m-d H:i:s')).' start';
 
         foreach(Asset::orderBy('family_id', 'desc')->orderBy('name','asc')->get() as $asset){
@@ -51,6 +65,5 @@ class CreateAssetsPngs extends Command
 
         $this->info(date('Y-m-d H:i:s')).' done';
 
-        return 0;
     }
 }

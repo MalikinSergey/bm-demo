@@ -6,7 +6,6 @@
     <div class="layer item-layer">
         <div class="container item-container">
 
-
             <div class="highlight">
 
                 <div class="highlight__main">
@@ -66,39 +65,9 @@
                     {{Form::close()}}
                 </div>
 
-
             </div>
 
-
-
-            <div class="assets-title">
-                {{$assets->count()}} {{$family->getTypePlural()}}
-            </div>
-
-            <div class="{{$family->getTypePlural()}}">
-
-                @foreach($assets as $asset)
-                    <a href="{{route('website.asset.show', [$asset->family->slug, $asset->slug])}}" class="{{$family->type}}-preview">
-                        <img src="{{$asset->previewUrl($family->type === 'illustration' ? 512 : 128)}}" alt="{{$asset->name}}">
-                    </a>
-                @endforeach
-
-            </div>
-
-            @if($family->packs->count())
-                <div class="assets-title packs-title assets-title--centerize">
-                    {{$family->packs->count()}} packs in this family:
-                </div>
-
-                <div class="packs">
-
-                    @foreach($family->packs as $pack)
-                        @include('components.pack')
-                    @endforeach
-
-                </div>
-
-            @endif
+            <family-show :family='{!! $family->toJson() !!}'></family-show>
 
         </div>
     </div>

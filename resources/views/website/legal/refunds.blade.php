@@ -17,8 +17,9 @@
 
                 <ul>
                     <li><strong>Company:</strong> when this policy mentions &ldquo;Company,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our,&rdquo;
-                                                  it refers to Individual Entrepreneur Ilia Boiko,
-                                                  Russian Federation, Velikiy Novgorod, Gerasimenko-Manitsyna, 26k1 apt. 79 that is responsible for your information under this Return &amp; Refund
+                                                  it refers to Ilia Boiko PR,
+                                                  21000 Serbia, Novi Sad,
+                                                  Mishe Dimitrievicha 75, ap.5 that is responsible for your information under this Return &amp; Refund
                                                   Policy.
                     </li>
                     <li><strong>Customer:</strong> refers to the company, organization or person that signs up to use the Service to manage the relationships with your consumers or service users.</li>

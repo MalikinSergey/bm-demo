@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Helpers\EnsureSlug;
+use App\Services\TwoCheckout;
 use App\Support\Archievable;
 use App\Support\HasLicense;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -46,6 +48,18 @@ class Family extends \Eloquent implements Downloable
         'data',
         'status',
         'position'
+    ];
+
+    protected $visible = [
+        'id',
+        'name',
+        'type',
+        'type_plural',
+        'slug'
+    ];
+
+    protected $appends = [
+        'type_plural'
     ];
 
     /**
@@ -101,6 +115,11 @@ class Family extends \Eloquent implements Downloable
     public function getTypePlural()
     {
         return $this->type . "s";
+    }
+
+    public function typePlural(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->type . "s");
     }
 
     public function uploadCover(UploadedFile $cover)
@@ -175,16 +194,12 @@ class Family extends \Eloquent implements Downloable
 
     public function hasLicense($user, $type = false)
     {
-
-
-        if(!$user){
+        if (!$user) {
             return false;
         }
 
         foreach ($this->users as $buyer) {
-
             if ($user->id === $buyer->id && (!$type || $type === $buyer->pivot->license)) {
-
                 return true;
             }
         }
@@ -193,14 +208,44 @@ class Family extends \Eloquent implements Downloable
     }
 
 
-    public function itemType(){
-
+    public function itemType()
+    {
         return 'family';
-
     }
 
 
-    public function downloadLink(){
+    public function downloadLink()
+    {
         return route('website.family.download', $this->slug);
+    }
+
+    public function paymentLink($licenseType)
+    {
+        $params = [
+            'merchant' => '250347688076',
+            'nodata' => 1,
+            'pay_type' => 'paypal',
+            'dynamic' => '1',
+            'currency' => 'USD',
+            'type' => 'digital',
+            'qty' => '1',
+            'return-url' => route('website.family.show', [$this->slug]),
+            'return-type' => 'redirect',
+            'item-ext-ref' => 'family_' . $this->id . '_' . $licenseType,
+            'prod' => $this->name . " ({$this->type})",
+            'price' => $this->getPrice($licenseType)
+        ];
+
+        if (config('boykomarket.test_payment_mode')) {
+            $params['test'] = '1';
+        }
+
+        $sign = app(TwoCheckout::class)->sign($params);
+
+        $params['signature'] = $sign;
+
+        $link = 'https://secure.2checkout.com/checkout/buy?' . http_build_query($params);
+
+        return $link;
     }
 }

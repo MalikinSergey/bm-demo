@@ -47,9 +47,13 @@
                         {!! Form::text('slug', old('slug'), ['class' => 'form-control', 'placeholder' => 'Slug']) !!}
                     </div>
 
-                    <!-- jsonb -->
                     <div class="mb-3">
-                        {!! Form::label('status', 'Status', ['class' => 'form-label'], ['class' => 'form-label']) !!}
+                        {!! Form::label('purpose', 'Freebie or paid?', ['class' => 'form-label']) !!}
+                        {!! Form::select('purpose', ['paid' => 'Paid', 'freebie' => 'Freebie'], old('status'), ['class' => 'form-select']) !!}
+                    </div>
+
+                    <div class="mb-3">
+                        {!! Form::label('status', 'Status', ['class' => 'form-label']) !!}
                         {!! Form::select('status', trans('families.statuses'), old('status'), ['class' => 'form-select', 'placeholder' => 'Status']) !!}
                     </div>
 

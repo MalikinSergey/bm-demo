@@ -33,8 +33,16 @@
         </div>
 
         <div class="pack__price">
-            from <span class="pack-price-value">${{$pack->getPrice('personal')}}</span>
-            <span class="pack-price-discount">save {{$pack->getDiscountPercent()}}%</span>
+
+            @if($pack->purpose === 'freebie')
+                    <div class="pack__freebie">
+                        freebie
+                    </div>
+            @else
+                from <span class="pack-price-value">${{$pack->getPrice('personal')}}</span>
+                <span class="pack-price-discount">save {{$pack->getDiscountPercent()}}%</span>
+            @endif
+
         </div>
 
     </div>

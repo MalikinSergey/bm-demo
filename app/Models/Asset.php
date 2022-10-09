@@ -5,13 +5,16 @@ namespace App\Models;
 use App\Helpers\EnsureSlug;
 use App\Services\TwoCheckout;
 use App\Support\Archievable;
-use App\Support\HasLicense;
+use Eloquent;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
 use Stringy\StaticStringy;
 
-class Asset extends \Eloquent
+/**
+ * @mixin Eloquent
+ */
+class Asset extends Model
 {
     use EnsureSlug, Archievable;
 
@@ -29,6 +32,7 @@ class Asset extends \Eloquent
      * @type array
      */
     protected $fillable = [
+        'id',
         'name',
         'type',
         'price_personal',
@@ -39,6 +43,18 @@ class Asset extends \Eloquent
         'status',
         'position'
     ];
+
+    protected $visible = [
+        'name',
+        'type',
+        'slug',
+        'preview_url_w128',
+        'preview_url_w512',
+        'url_show',
+        'purpose'
+    ];
+
+    protected $appends = ['preview_url_w128', 'preview_url_w512', 'url_show'];
 
     /**
      * @type array
@@ -62,14 +78,11 @@ class Asset extends \Eloquent
                 $asset->updateSearchContent();
             }
         );
+    }
 
-        static::saving(
-            function ($asset) {
-                if ($asset->family) {
-                    $asset->type = $asset->family->type;
-                }
-            }
-        );
+    protected function type(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->family->type);
     }
 
     public function updateSearchContent()
@@ -79,8 +92,8 @@ class Asset extends \Eloquent
         $name = bm_slug($this->name, ' ');
 
         \DB::statement(
-            "UPDATE assets SET 
-                  search_content = setweight(to_tsvector('english', ?), 'A') || setweight(to_tsvector('english', ?), 'B') 
+            "UPDATE assets SET
+                  search_content = setweight(to_tsvector('english', ?), 'A') || setweight(to_tsvector('english', ?), 'B')
                     where id = ?",
             [$name, $tags, $this->id]
         );
@@ -111,30 +124,30 @@ class Asset extends \Eloquent
         return $this->family_id . "/" . $this->id;
     }
 
-    public function inlineSvg()
-    {
-        return \Storage::disk('assets')->get($this->path());
-    }
-
     public function previewDir()
     {
-        return "previews/" . $this->Family->slug;
+        return "previews/" . $this->family->slug;
     }
 
     public function makePng()
     {
+        if ($this->testPng()) {
+            return;
+        }
+
         shell_exec('convert-svg-to-png ' . Storage::disk('assets')->path($this->path()) . ' --width 1200');
 
-        if(!$this->testPng()){
-            $this->download_status = 'error';
-        }
-        else{
-            $this->download_status = 'ok';
+        Storage::disk('assets')->setVisibility($this->path() . ".png", "public");
 
+        if (!$this->testPng()) {
+            $this->download_status = 'error';
+        } else {
+            $this->download_status = 'ok';
         }
 
         $this->save();
     }
+
 
     public function testPng()
     {
@@ -145,7 +158,6 @@ class Asset extends \Eloquent
     {
         return Storage::disk('public')->exists($this->previewDir() . "/" . $this->id . "_w{$width}.png");
     }
-
 
     public function makePngPreviews($widths)
     {
@@ -163,17 +175,18 @@ class Asset extends \Eloquent
             $file = Storage::disk('public')->path($this->previewDir() . "/" . $this->id . "_w{$width}.png");
 
             try {
-                $result = shell_exec('convert-svg-to-png ' . $source . ' --width ' . $width.' 2>&1');
+                $command = 'convert-svg-to-png ' . $source . ' --width ' . $width . ' 2>&1';
+
+                $result = shell_exec($command);
+
                 rename($tempFile, $file);
                 $this->preview_status = 'ok';
             } catch (\Exception $e) {
                 $this->preview_status = 'error';
-                $message = "Make PNG preview error: " . $result;
+                $message = "Make PNG preview error";
                 bm_log($message, $this, ['widths' => $widths], 'error');
-
                 break;
             }
-
         }
 
         $this->save();
@@ -199,7 +212,7 @@ class Asset extends \Eloquent
 
     public function url($type = 'svg')
     {
-        return "/assets/" . $this->Family->slug . "/" . $this->slug . "." . $type;
+        return "/assets/" . $this->family->slug . "/" . $this->slug . "." . $type;
     }
 
     public static function suggestName($original)
@@ -223,9 +236,9 @@ class Asset extends \Eloquent
         return $q;
     }
 
-    public function getPrice($type)
+    public function getPrice($license)
     {
-        return ($this->{"price_" . $type} ?: config('boykomarket.prices.' . $this->type . '.' . $type));
+        return ($this->{"price_" . $license} ?: config('boykomarket.prices.' . $this->type . '.' . $license));
     }
 
     public function users()
@@ -295,13 +308,45 @@ class Asset extends \Eloquent
         return 'asset';
     }
 
+    public function makeUniqueSlug($name)
+    {
+        if (!$this->family_id) {
+            throw new \LogicException('Family ID not set, its needed to create slug');
+        }
+
+        $base = StaticStringy::slugify($name);
+
+        $count = 2;
+
+        $slug = $base;
+
+        $query = Asset::where('slug', $slug)->where('family_id', $this->family_id);
+
+        if ($this->exists) {
+            $query->where('id', '!=', $this->id);
+        }
+
+        $slugExists = $query->exists();
+
+        while ($slugExists) {
+            $slug = $base . "-" . $count;
+
+            $slugExists = Asset::where('slug', $slug)->where('family_id', $this->family_id)->exists();
+
+            $count++;
+        }
+
+        $this->slug = $slug;
+    }
+
     public function paymentLink($licenseType, $userID)
     {
         $params = [
             'merchant' => '250347688076',
+            'nodata' => 1,
+            'pay_type'=> 'paypal',
             'dynamic' => '1',
             'currency' => 'USD',
-            'tpl' => 'default',
             'type' => 'digital',
             'qty' => '1',
             'return-url' => route('website.asset.show', [$this->family->slug, $this->slug]),
@@ -322,6 +367,53 @@ class Asset extends \Eloquent
         $link = "https://secure.2checkout.com/checkout/buy?" . http_build_query($params);
 
         return $link;
+    }
+
+    protected function previewUrlW128(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->previewUrl(128),
+        );
+    }
+
+    protected function previewUrlW512(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->previewUrl(512),
+        );
+    }
+
+    protected function urlShow(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => route('website.asset.show', [$this->family->slug, $this->slug]),
+        );
+    }
+
+    protected function purpose(): Attribute
+    {
+        $asset = $this;
+
+        return Attribute::get(
+            function ($value) use ($asset) {
+                if (!$value) {
+                    $isFreebie = $asset->packs()->where('purpose', 'freebie')->exists();
+
+                    if ($isFreebie) {
+                        $value = 'freebie';
+                    } else {
+                        $value = 'paid';
+                    }
+
+                    $asset->update(['purpose' => $value]);
+
+                    return $value;
+
+                } else {
+                    return $value;
+                }
+            },
+        )->shouldCache();
     }
 
 }

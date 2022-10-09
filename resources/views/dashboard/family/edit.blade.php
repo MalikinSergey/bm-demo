@@ -23,7 +23,7 @@
 
                         <div class="card-body">
 
-                            @if($family->getCoverUrl())
+                            @if($family->hasCover())
                                 <img src="{{$family->getCoverUrl()}}" alt="" class="img-fluid img-thumbnail mb-4">
                             @endif
 
@@ -34,13 +34,10 @@
                                 {!! Form::file('cover',  ['class' => 'form-control', 'placeholder' => 'cover']) !!}
                             </div>
 
-
-
                             <div class="mb-3">
                                 {!! Form::label('name', 'Name', ['class' => 'form-label']) !!}
                                 {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Name']) !!}
                             </div>
-
 
                             <div class="mb-3">
                                 {!! Form::label('type', 'Type', ['class' => 'form-label']) !!}
@@ -62,16 +59,12 @@
                                 {!! Form::text('price_commercial_ext', old('price_commercial_ext'), ['class' => 'form-control', 'placeholder' => 'Price']) !!}
                             </div>
 
-
-
-
                             <div class="mb-3">
                                 {!! Form::label('slug', 'Slug', ['class' => 'form-label']) !!}
                                 {!! Form::text('slug', old('slug'), ['class' => 'form-control', 'placeholder' => 'Slug']) !!}
                             </div>
 
                             <!-- jsonb -->
-
 
                             <div class="mb-3">
                                 {!! Form::label('status', 'Status', ['class' => 'form-label']) !!}
@@ -88,7 +81,6 @@
                             </div>
 
                             {!! Form::close() !!}
-
 
                         </div>
 

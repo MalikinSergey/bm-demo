@@ -3,7 +3,6 @@
 
 @section('page')
 
-
     <div class="layer item-layer">
         <div class="container item-container">
 
@@ -37,12 +36,31 @@
                         </div>
 
                         <div class="item-from">
-                            {{\Stringy\StaticStringy::upperCaseFirst($pack->family->getTypePlural())}} pack from
+                            @if($pack->purpose === 'freebie')
+                                Freebie
+                            @else
+                                Premium
+                            @endif
+
+                            {{\Stringy\StaticStringy::lowerCaseFirst($pack->family->getTypePlural())}} pack from
                             <a class="bm-link" href="{{$pack->family->url()}}">{{$pack->family->name}}</a>
-                                                                                                       family
+                                family
                         </div>
 
-                        @if($pack->hasLicense(auth()->user()))
+                        @if($pack->purpose === 'freebie')
+
+                            @if(auth()->user())
+                                <div class="item-download">
+                                    <div class="item-download__title">
+                                        Click on button below to download <b>freebie</b> "{{$pack->name}}" assets:
+                                    </div>
+                                    <a class="button button--primary" href="{{route('website.pack.download', [$pack->family->slug, $pack->slug])}}">Download ZIP with SVG and PNG assets</a>
+                                </div>
+                            @else
+                                @include('website.item.components.formats', ['purpose' => 'freebie'])
+                            @endif
+
+                        @elseif($pack->hasLicense(auth()->user()))
 
                             <div class="item-download">
 
@@ -67,13 +85,16 @@
 
                     </div>
 
-                    <div class="item-pricing">
-                        <div class="pricing">
-                            {{Form::open(['method' => 'post', 'route' => ['website.pack.buy', [$pack->family->slug, $pack->slug]]])}}
-                            @include('website.item.components.pricing', ['item' => $pack])
-                            {{Form::close()}}
+                    @if($pack->purpose != 'freebie')
+
+                        <div class="item-pricing">
+                            <div class="pricing">
+                                {{Form::open(['method' => 'post', 'route' => ['website.pack.buy', [$pack->family->slug, $pack->slug]]])}}
+                                @include('website.item.components.pricing', ['item' => $pack])
+                                {{Form::close()}}
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                 </div>
 

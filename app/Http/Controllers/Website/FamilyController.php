@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
-use App\Mail\DownloadLinkMessage;
-use App\Models\Asset;
 use App\Models\Family;
 use Illuminate\Http\Request;
 
@@ -37,17 +35,21 @@ class FamilyController extends Controller
     {
         $family = Family::whereSlug($familySlug)->firstOrFail();
 
-        if (!auth()->check()) {
-            return redirect()->route('website.user.register_form', ['from_url' => $family->url(), 'from_title' => $family->name]);
-        }
+//        if (!auth()->check()) {
+//            return redirect()->route('website.user.register_form', ['from_url' => $family->url(), 'from_title' => $family->name]);
+//        }
 
         $license = $request->input('license_type');
 
-        auth()->user()->families()->save($family, ['license' => $license]);
+        $paymentLink = $family->paymentLink($license);
 
-        \Mail::to([auth()->user()])->send(new DownloadLinkMessage($family));
+        return redirect($paymentLink);
 
-        return back()->withMessage(trans('purchases.messages.success'));
+//        auth()->user()->families()->save($family, ['license' => $license]);
+
+//        \Mail::to([auth()->user()])->send(new DownloadLinkMessage($family));
+
+//        return back()->withMessage(trans('purchases.messages.success'));
     }
 
     public function download($familySlug)

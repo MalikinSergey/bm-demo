@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "sourceMap": true,
+        "baseUrl": "./resources/js/",
+        "paths": {
+            "@": [
+                "."
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "resources/js/**/*"
+    ]
+}

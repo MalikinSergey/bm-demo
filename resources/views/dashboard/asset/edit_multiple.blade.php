@@ -48,13 +48,28 @@
 
     <hr>
 
+    <div class="row">
+
+        <div class="col-4">
+            {{Form::open(['route' => [ 'dashboard.asset.edit_multiple' ], 'method' => 'GET' ])}}
+
+            {{Form::hidden('family_id', $family->id)}}
+
+            <input type="text" value="{{request()->input('name')}}" name="name" class="form-control mb-2" placeholder="icon name">
+
+            <button class="btn btn-primary">Search</button>
+
+            {{Form::close()}}
+        </div>
+
+    </div>
+
+
     {{Form::open(['route' => [ 'dashboard.asset.update_multiple' ], 'method' => 'POST' ])}}
 
     @foreach($assets as $id => $asset)
 
-
         <div class="row align-items-center">
-
 
             <div class="col-1">
                 <div class="form-check form-check-inline">
@@ -112,6 +127,11 @@
         <hr>
 
     @endforeach
+
+
+    <div class="d-flex justify-content-center">
+        {!! $assets->links() !!}
+    </div>
 
 
 

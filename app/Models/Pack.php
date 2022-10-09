@@ -4,9 +4,15 @@ namespace App\Models;
 
 use App\Helpers\EnsureSlug;
 use App\Support\Archievable;
-use App\Support\HasLicense;
+use DB;
+use Eloquent;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 
-class Pack extends \Eloquent
+/**
+ * @mixin Eloquent
+ */
+class Pack extends Model
 {
 
     use EnsureSlug, Archievable;
@@ -26,14 +32,14 @@ class Pack extends \Eloquent
      */
     protected $fillable = [
         'name',
-        'type',
-        'price_personal',
-        'price_commercial',
-        'price_commercial_ext',
         'slug',
         'data',
         'status',
-        'position'
+        'position',
+        'price_personal',
+        'price_commercial',
+        'price_commercial_ext',
+        'purpose'
     ];
 
     /**
@@ -51,19 +57,16 @@ class Pack extends \Eloquent
      */
     public $timestamps = true;
 
+    protected function type(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->family->type);
+    }
+
     protected static function booted()
     {
         static::saved(
             function ($pack) {
                 $pack->updateSearchContent();
-            }
-        );
-
-        static::saving(
-            function ($pack) {
-                if ($pack->family) {
-                    $pack->type = $pack->family->type;
-                }
             }
         );
     }
@@ -75,7 +78,7 @@ class Pack extends \Eloquent
 
         $name = bm_slug($this->name, ' ');
 
-        \DB::statement(
+        DB::statement(
             "UPDATE packs SET 
                   search_content = setweight(to_tsvector('english', ?), 'A') || setweight(to_tsvector('english', ?), 'B') 
                     where id = ?",
@@ -171,10 +174,9 @@ class Pack extends \Eloquent
         return $this->morphToMany(User::class, 'purchase')->using(Purchase::class);
     }
 
-
     public function downloadDir()
     {
-        return "families/" . $this->slug."/packs/";
+        return "families/" . $this->slug . "/packs/";
     }
 
     public function downloadPath()
@@ -187,24 +189,21 @@ class Pack extends \Eloquent
         return $this->slug . ".zip";
     }
 
-
-    public function downloadLink(){
+    public function downloadLink()
+    {
         return route('website.pack.download', [$this->family->slug, $this->slug]);
     }
 
     public function hasLicense($user, $type = false)
     {
-
-
-        if(!$user){
+        if (!$user) {
             return false;
         }
 
-        // сперва проверяем, может есть ли лицензия на всё семейство
+        // сперва проверяем, может есть лицензия на всё семейство
         $family = $this->family;
 
         foreach ($family->users as $buyer) {
-
             if ($user->id === $buyer->id && (!$type || $type === $buyer->pivot->license)) {
                 return true;
             }
@@ -212,9 +211,7 @@ class Pack extends \Eloquent
 
         // а затем на сам пак
         foreach ($this->users as $buyer) {
-
-            if ($user->id === $buyer->id && (!$type ||$type === $buyer->pivot->license)) {
-
+            if ($user->id === $buyer->id && (!$type || $type === $buyer->pivot->license)) {
                 return true;
             }
         }
@@ -222,12 +219,10 @@ class Pack extends \Eloquent
         return false;
     }
 
-
-
-    public function itemType(){
-
+    public function itemType()
+    {
         return 'pack';
-
     }
+
 }
 

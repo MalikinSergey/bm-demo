@@ -7,10 +7,19 @@ use App\Mail\DownloadLinkMessage;
 use App\Models\Asset;
 use App\Models\Family;
 use App\Models\Pack;
+use App\Repositories\PackRepository;
 use Illuminate\Http\Request;
 
 class PackController extends Controller
 {
+
+
+    public function freebies(){
+
+        $packs = Pack::where('purpose', 'freebie')->get();
+
+        return view('website.pack.freebies', ['packs' => $packs]);
+    }
 
     public function show($familySlug, $packSlug)
     {
@@ -61,4 +70,6 @@ class PackController extends Controller
                 ['Content-Disposition' => 'attachment; filename="' . $pack->downloadName() . '"']
             );
     }
+
+
 }

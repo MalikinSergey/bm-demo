@@ -1,30 +1,34 @@
 {
     "private": true,
     "scripts": {
-        "deploy": "git clean -f; git fetch; git reset --hard origin/main; composer i",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production",
-        "start": ""
+        "production": "mix --production"
     },
     "dependencies": {
-        "convert-svg-to-png": "^0.5.0"
+        "@hennge/vue3-pagination": "^1.0.17",
+        "@vitejs/plugin-vue": "^2.3.3",
+        "@vueuse/components": "^8.2.4",
+        "@vueuse/core": "^8.2.4",
+        "convert-svg-to-png": "^0.5.0",
+        "pinia": "^2.0.14",
+        "vue": "^3.2.31",
+        "vuejs-paginate-next": "^1.0.2"
     },
     "devDependencies": {
-        "@tailwindcss/forms": "^0.2.1",
-        "alpinejs": "^2.7.3",
         "autoprefixer": "^10.1.0",
         "axios": "^0.21",
-        "laravel-mix": "^6.0.6",
+        "laravel-mix": "^6.0.49",
         "lodash": "^4.17.19",
-        "postcss": "^8.2.1",
-        "postcss-import": "^12.0.1",
-        "sass": "^1.32.7",
-        "stylus": "^0.54.8",
-        "tailwindcss": "^2.0.2"
+        "postcss": "^8.1.14",
+        "stylus": "^0.57.0",
+        "stylus-loader": "^6.2.0",
+        "ts-loader": "^9.2.8",
+        "typescript": "^4.6.3",
+        "vue-loader": "^16.8.3"
     }
 }

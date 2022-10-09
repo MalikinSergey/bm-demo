@@ -12,14 +12,14 @@ class CreateAssetsPreviews extends Command
      *
      * @var string
      */
-    protected $signature = 'bm:create-assets-previews';
+    protected $signature = 'bm:previews';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = '';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,6 @@ class CreateAssetsPreviews extends Command
      */
     public function handle()
     {
-
         while(true){
             $this->createAssets();
 
@@ -46,14 +45,13 @@ class CreateAssetsPreviews extends Command
 
             sleep(60 * 10);
         }
-
-        return 0;
     }
 
     protected function createAssets(){
         $this->info(date('Y-m-d H:i:s')) . ' start';
 
         foreach (Asset::orderBy('family_id', 'asc')->get() as $asset) {
+
             if (!$asset->Family) {
                 $asset->preview_status = 'error';
                 $asset->save();
@@ -62,10 +60,8 @@ class CreateAssetsPreviews extends Command
 
             $this->info($asset->Family->name . ": " . $asset->name);
 
-
             if($asset->Family->type === 'icon'){
                 $asset->makePngPreviews([320, 128, 86]);
-
             }
             else{
                 $asset->makePngPreviews([512, 320, 128, 86]);

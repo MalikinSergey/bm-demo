@@ -60,14 +60,28 @@ Route::get('/registered', 'Website\User\RegisterController@registered')->name('w
 Route::post('/sign-in', 'Website\User\LoginController@login')->name('website.user.login');
 Route::post('/sign-out', 'Website\User\LoginController@logout')->name('website.user.logout');
 
+
+#
+
+Route::group(
+    ['namespace' => 'Website\User', 'prefix' => 'user', 'as' => 'website.user.', 'middleware' => ['auth:web']],
+
+    function(){
+        Route::get('profile', 'UserController@profile')->name('website.user.profile');
+    }
+
+);
+
+
 #
 Route::get('/families', 'Website\FamilyController@index')->name('website.family.index');
 Route::get('/illustrations', 'Website\FamilyController@illustrations')->name('website.family.illustrations');
+Route::get('/freebies', 'Website\PackController@freebies')->name('website.pack.freebies');
 
 Route::get('/assets/{family}/{asset}.svg', 'Website\AssetController@inline')->name('website.asset.inline');
 //Route::get('/assets/{family}/{asset}.{type}', 'Website\AssetController@inline');
 
-# familiy
+# family
 Route::get('/family/{family}', 'Website\FamilyController@show')->name('website.family.show');
 
 Route::post('/family/{family}/buy', 'Website\FamilyController@buy')->name('website.family.buy');

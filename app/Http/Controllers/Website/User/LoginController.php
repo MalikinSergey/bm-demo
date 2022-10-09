@@ -16,34 +16,46 @@ class LoginController extends Controller
     {
 
         $this->validate($request, [
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
         $credentials = $request->only(['email', 'password']);
 
 
-
-
         if (Auth::attempt($credentials, true)) {
-
-
 
             if(!\auth()->user()->email_verified_at){
 
                 \auth()->logout();
 
-                return back()->with('login_error', 'Email is not verified')->withInput();
+                if($request->expectsJson()){
+                    return ['status' => 'error', 'message' => 'Email is not verified'];
+                }
+                else{
+                    return back()->with('login_error', 'Email is not verified')->withInput();
+
+                }
 
             }
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('website.index'));
+            if($request->expectsJson()){
+                return ['status' => 'success', 'data' => user()->toArray()];
+            }
+            else{
+                return redirect()->intended(route('website.index'));
+            }
         }
         else{
+            if($request->expectsJson()){
+                return ['status' => 'error', 'message' => 'Incorrect username or password'];
+            }
+            else{
+                return back()->with('login_error', 'Incorrect username or password')->withInput();
 
-            return back()->with('login_error', 'Incorrect username or password')->withInput();
+            }
 
         }
     }
@@ -56,7 +68,13 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('website.index');
+        if($request->expectsJson()){
+            return ['status' => 'success'];
+        }
+        else{
+            return redirect()->route('website.index');
+        }
+
     }
 
 

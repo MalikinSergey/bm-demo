@@ -29,8 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//        $schedule->command('bm:create-assets-pngs')->cron('*/20 * * * *')->withoutOverlapping();
-//        $schedule->command('bm:create-assets-previews')->cron('*/30 * * * *')->withoutOverlapping();
+
     }
 
     /**

@@ -38,13 +38,9 @@ class PackController extends Controller
 
         $pack = new Pack();
 
-        /** @type Pack $pack */
-
-        $pack->fill($request->only('name', 'price_personal', 'price_commercial', 'price_commercial_ext', 'slug', 'status'));
+        $pack->fill(request()->all());
 
         $pack->family_id = $family->id;
-
-        $pack->type = $family->type;
 
         $pack->ensureSlug();
 

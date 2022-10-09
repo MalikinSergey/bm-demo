@@ -23,12 +23,33 @@
                     </div>
 
                     <div class="item-from">
+                        @if($asset->purpose === 'freebie')
+                            freebie
+                        @else
+                            premium
+                        @endif
+
+                        {{$asset->family->type}}
+
                         from
                         <a href="{{$asset->family->url()}}">{{$asset->family->name}}</a>
                         family
                     </div>
 
-                    @if($asset->hasLicense(auth()->user()))
+                    @if($asset->purpose === 'freebie')
+
+                        @if(auth()->user())
+                            <div class="item-download">
+                                <div class="item-download__title">
+                                    Click on button below to download <b>freebie</b> "{{$asset->name}}" assets:
+                                </div>
+                                <a class="button button--primary" href="{{route('website.asset.download', [$asset->family->slug, $asset->slug])}}">Download ZIP with SVG and PNG assets</a>
+                            </div>
+                        @else
+                            @include('website.item.components.formats', ['purpose' => 'freebie'])
+                        @endif
+
+                    @elseif($asset->hasLicense(auth()->user()))
 
                         <div class="item-download">
 
@@ -61,6 +82,7 @@
                     {{--                        </div>--}}
                     {{--                    @endif--}}
 
+                    @if($asset->purpose != 'freebie')
                     <div class="item-pricing">
                         <div class="pricing">
                             {{Form::open(['method' => 'post', 'route' => ['website.asset.buy', [$asset->family->slug, $asset->slug]]])}}
@@ -68,6 +90,8 @@
                             {{Form::close()}}
                         </div>
                     </div>
+                    @endif
+
 
                 </div>
 

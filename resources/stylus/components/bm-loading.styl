@@ -1,0 +1,57 @@
+.bm-loading {
+  display: flex
+
+  justify-content: center
+
+  align-items: center
+
+  div {
+
+    background: #efefef;
+
+    border-radius 16px;
+
+    width: 16px;
+
+    height: 16px;
+
+    margin: 16px;
+
+    animation-name: blink;
+
+    animation-duration: 1.2s;
+
+    animation-iteration-count: infinite;
+
+    animation-fill-mode: both;
+
+    &:nth-child(2){
+      animation-delay 0.3s
+    }
+
+    &:nth-child(3){
+      animation-delay 0.6s
+    }
+
+    &:nth-child(4){
+      animation-delay 0.9s
+    }
+
+  }
+}
+
+@keyframes blink {
+
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+
+}

@@ -67,12 +67,12 @@ class AssetController extends Controller
 
             $asset = new Asset();
 
-            $asset->fill($family->only('type'));
-
             $asset->name = Asset::suggestName($file->getClientOriginalName());
 
-            $asset->slug = StaticStringy::slugify($file->getClientOriginalName());
             $asset->family_id = $family->id;
+
+            $asset->makeUniqueSlug($asset->name);
+
             $asset->save();
 
             $assetIds[] = $asset->id;
@@ -102,19 +102,15 @@ class AssetController extends Controller
 
             foreach ($request->input('selected_assets', []) as $id) {
                 $asset = Asset::findOrFail($id);
-
-
                 $asset->delete();
             }
-
-
         } else {
             foreach ($request->asset as $id => $data) {
                 $asset = Asset::findOrFail($id);
 
                 $asset->fill($data);
 
-                $asset->slug = StaticStringy::slugify($asset->name);
+                $asset->makeUniqueSlug($asset->name);
 
                 $asset->save();
 
@@ -143,7 +139,6 @@ class AssetController extends Controller
 
     protected function tagsFromName($file)
     {
-        #
         $name = $file->getClientOriginalName();
 
         $name = explode(".", $name)[0];
@@ -154,19 +149,17 @@ class AssetController extends Controller
             $tagSlug = StaticStringy::slugify($tagName);
 
             $tag = Tag::firstOrCreate(['slug' => $tagSlug], ['name' => $tagName]);
-//            $tag->assets()->sync($asset);
-
         }
     }
 
-    public function show(Request $request, $id)
-    {
-        $asset = Asset::find($id);
-
-        /** @type Asset $asset */
-
-        return view('dashboard.asset.show', ['asset' => $asset]);
-    }
+//    public function show(Request $request, $id)
+//    {
+//        $asset = Asset::find($id);
+//
+//        /** @type Asset $asset */
+//
+//        return view('dashboard.asset.show', ['asset' => $asset]);
+//    }
 
     public function edit($id)
     {
@@ -233,7 +226,17 @@ class AssetController extends Controller
             $assets = $pack->assets();
         }
 
-        $assets = $assets->orderBy('id', 'desc')->get();
+        if($request->input('name')){
+
+            if(ctype_digit($request->input('name'))){
+                $assets->where('id', $request->input('name'));
+            }
+            else{
+                $assets->where('name', 'ilike', '%'.$request->input('name').'%');
+            }
+        }
+
+        $assets = $assets->orderBy('name', 'asc')->paginate(100);
 
         return view('dashboard.asset.edit_multiple', ['source' => $source, 'assets' => $assets, 'upload' => $upload ?? null, 'family' => $family ?? null, 'pack' => $pack ?? null]);
     }

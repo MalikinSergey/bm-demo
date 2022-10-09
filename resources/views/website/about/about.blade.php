@@ -451,7 +451,8 @@
                 </p>
 
 
-                And if you want to learn more about our studio, view our projects, read reviews of us, we look forward to seeing you on our website: Boyko Pictures
+                And if you want to learn more about our studio, view our projects, read reviews of us, we look forward to seeing you on our website:
+                <a href="https://boyko.pictures" class="bm-link">Boyko Pictures</a>
 
             </div>
 

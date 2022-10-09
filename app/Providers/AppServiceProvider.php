@@ -10,6 +10,7 @@ use Illuminate\Session\Store as Session;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LittleGateKeeper\Authenticator;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
             // die('services on the maintenance');
         }
 
+        Paginator::useBootstrapFive();
 
         Relation::morphMap(
             [

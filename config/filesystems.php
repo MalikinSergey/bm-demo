@@ -46,16 +46,46 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/assets'),
             'url' => env('APP_URL').'/assets',
+            'permissions' => [
+                'file' => [
+                    'public' => 0664,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0774,
+                    'private' => 0700,
+                ],
+            ],
         ],
 
         'assets-png' => [
             'driver' => 'local',
             'root' => storage_path('app/assets-png'),
+            'permissions' => [
+                'file' => [
+                    'public' => 0664,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0774,
+                    'private' => 0700,
+                ],
+            ],
         ],
 
         'downloads' => [
             'driver' => 'local',
             'root' => storage_path('app/downloads'),
+            'permissions' => [
+                'file' => [
+                    'public' => 0664,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0774,
+                    'private' => 0700,
+                ],
+            ],
         ],
 
         's3' => [

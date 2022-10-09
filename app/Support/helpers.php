@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Stringy\StaticStringy;
 
 function bm_slug($string, $replace = "-")
@@ -19,13 +21,11 @@ function bm_slug($string, $replace = "-")
 
 function bm_log($message, $object = null, $data = null, $level = 'info')
 {
-    \Log::driver('db')->log($level, $message, ['object' => $object, 'data' => $data]);
+    Log::driver('db')->log($level, $message, ['object' => $object, 'data' => $data]);
 }
 
 function bm_zip($source, $destination, $include_dir = false)
 {
-//    dd($source, $destination);
-
     if (!extension_loaded('zip') || !file_exists($source)) {
         return false;
     }
@@ -84,7 +84,10 @@ function bm_zip($source, $destination, $include_dir = false)
     return $zip->close();
 }
 
-function user()
+/**
+ * @return User|Authenticatable|null
+ */
+function user(): User|Authenticatable|null
 {
     return auth()->user();
 }

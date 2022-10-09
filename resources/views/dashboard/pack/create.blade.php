@@ -48,8 +48,13 @@
                     </div>
 
                     <div class="mb-3">
+                        {!! Form::label('purpose', 'Freebie or paid?', ['class' => 'form-label']) !!}
+                        {!! Form::select('purpose', ['paid' => 'Paid', 'freebie' => 'Freebie'], old('status'), ['class' => 'form-select']) !!}
+                    </div>
+
+                    <div class="mb-3">
                         {!! Form::label('status', 'Status', ['class' => 'form-label']) !!}
-                        {!! Form::select('status', trans('packs.statuses'), old('status'), ['class' => 'form-control', 'placeholder' => 'Status']) !!}
+                        {!! Form::select('status', trans('packs.statuses'), old('status'), ['class' => 'form-select', 'placeholder' => 'Status']) !!}
                     </div>
 
                     <div class="text-center mb-3">

@@ -5,12 +5,12 @@
 
     <script src="https://www.google.com/recaptcha/api.js"></script>
 
-
     <script>
       function onSubmit(token) {
         document.getElementById("contact-form").submit();
       }
     </script>
+
 @endpush
 
 @section('page')
@@ -86,10 +86,9 @@
 
                         <p>
                             <i>
-                                Individual Entrepreneur Ilia Boiko, <br>
-                                Zipcode: 173004 <br>
-                                Russian Federation, Velikiy Novgorod, <br>
-                                Gerasimenko-Manitsyna, 26k1 apt. 79
+                                Ilia Boiko PR,<br>
+                                21000 Serbia, Novi Sad,<br>
+                                Mishe Dimitrievicha 75, ap.5
                             </i>
 
                         </p>

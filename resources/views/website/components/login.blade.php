@@ -1,4 +1,4 @@
-<div class="compact-card login-card" style="{{Session::get('login_error') ? '' : 'display:none;'}}">
+<div class="compact-card login-card" v-cloak v-show="showLogin">
 
     <form action="{{route('website.user.login')}}" method="post">
 
@@ -7,6 +7,7 @@
         <div class="compact-card__header">
             Sign in
         </div>
+
         @if(Session::get('login_error'))
             <div class="bm-errors" role="alert">{{trans(Session::get('login_error'))}}</div>
 
@@ -52,7 +53,7 @@
             </div>
         </div>
 
-        <div class="bm-button-group bm-button-group--line mt-32">
+        <div class="bm-button-group bm-button-group--line bm-button-group--center mt-32">
 
             <button class="button button--primary  mr-16" type="submit">
                 Sign in
